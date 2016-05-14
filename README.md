@@ -6,9 +6,9 @@ Service is running at [http://1.accmanager-1310.appspot.com](http://1.accmanager
 
 CRUD action are possible with these HTTP requests :
 
-	- GET 		/account 	List all account.
+	- GET 		/account 		List all account.
 	- GET 		/account/{id} 	Give account associated to the supplied id.
-	- POST 		/account 	Add the supplied in body account.
+	- POST 		/account 		Add the supplied in body account.
 	- PUT		/account/{id}	Modify supplied in body properties of the designated account.
 	- DELETE	/account/{id}	Delete the designated account.
 
