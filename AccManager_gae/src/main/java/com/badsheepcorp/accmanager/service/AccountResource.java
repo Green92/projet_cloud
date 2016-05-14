@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import com.badsheepcorp.accmanager.business.Account;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -101,7 +102,10 @@ public class AccountResource {
 	}
 	
 	private Response getUnprocessableEntityResponse() {
-		return Response.status(422).entity("Unprocessable entity").encoding("utf-8").build();
+		return Response.status(Status.BAD_REQUEST)
+                .entity("Invalid data supplied for request")
+                .encoding("utf-8")
+                .build();
 	}
 	
 	public AccountResource() {
