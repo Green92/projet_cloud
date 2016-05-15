@@ -16,6 +16,26 @@ CRUD action are possible with these HTTP requests :
 
 To run the service locally : 
 
+    $ cd AccManager_gae
+    $ mvn appengine:devserver
+
+##Approval Manager :
+
+Service is running at [http://1.appmanager-1311.appspot.com](http://1.appmanager-1311.appspot.com).
+
+CRUD action are possible with these HTTP requests :
+
+	- GET 		/approval 		List all approvals.
+	- GET 		/approval/{id} 	Give approval associated to the supplied id.
+	- POST 		/approval 		Add the approval supplied in body .
+	- PUT		/approval/{id}	Modify supplied in body properties of the designated approval.
+	- DELETE	/approval/{id}	Delete the designated approval.
+
+**Service only accept JSON and XML serialized data. It can't emit XML serialized responses.**
+
+To run the service locally : 
+
+    $ cd AppManager_gae
     $ mvn appengine:devserver
 
 ##Check Account :
