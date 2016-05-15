@@ -18,4 +18,19 @@ To run the service locally :
 
     $ mvn appengine:devserver
 
+##Check Account :
+
+Service is runnig at [https://murmuring-hamlet-27164.herokuapp.com/checkaccount](https://murmuring-hamlet-27164.herokuapp.com/checkaccount).
+
+Only GET action is possible with this HTTP request :
+
+    - GET       /risk/{id}        Return the risk associated to the supplied id.
+
+Example:
+>[https://murmuring-hamlet-27164.herokuapp.com/checkaccount/risk/5649391675244544](https://murmuring-hamlet-27164.herokuapp.com/checkaccount/risk/5649391675244544)
+
+To run the service locally : 
+
+    $ mvn tomcat:run 
+
 
