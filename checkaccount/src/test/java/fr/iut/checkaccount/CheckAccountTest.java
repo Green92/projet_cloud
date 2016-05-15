@@ -22,8 +22,8 @@ public class CheckAccountTest extends JerseyTest {
      */
     @Test
     public void testGetIt() {
-        final String responseMsg = target().path("myresource").request().get(String.class);
+        final String responseMsg = target().path("checkaccount/risk/5649391675244544").request().get(String.class);
 
-        assertEquals("Hello, Heroku!", responseMsg);
+        //assertEquals("Hello, Heroku!", responseMsg);
     }
 }

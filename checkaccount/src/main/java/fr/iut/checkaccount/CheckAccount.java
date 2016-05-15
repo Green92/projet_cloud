@@ -8,6 +8,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.json.*;
 
 @Path("/checkaccount")
 public class CheckAccount {
@@ -22,15 +25,18 @@ public class CheckAccount {
      */
     @GET
     @Path("risk/{account}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String risk(@PathParam("account") String account) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response risk(@PathParam("account") String account) {    	
     	Client c = ClientBuilder.newClient();
     	WebTarget target = c.target(ACC_MANAGER_URL);
     	
-    	String responseMsg = target.path("").request().get(String.class);
+    	String responseMsg = target.path(account).request().get(String.class);
     	
+    	JSONObject result = new JSONObject(responseMsg);
     	
-    	
-        return responseMsg;
-    }
+    	JSONObject json = new JSONObject();
+    	json.put("risque", result.get("risque"));
+
+    	return Response.ok(json.toString()).build();    
+    	}
 }
