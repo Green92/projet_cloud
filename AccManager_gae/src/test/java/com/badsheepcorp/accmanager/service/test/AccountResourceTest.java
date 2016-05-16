@@ -67,7 +67,7 @@ public class AccountResourceTest {
 	public void testCreateInvalidAccount() {
 		Response resp = accRes.createAccount(new Account());
 		
-		assertEquals("Response should be a 422 HTTP error response when trying to create an invalide account.", 422, resp.getStatus());
+		assertEquals("Response should be a 400 HTTP error response when trying to create an invalide account.", 400, resp.getStatus());
 	}
 	
 	@Test

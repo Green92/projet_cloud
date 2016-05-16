@@ -4,16 +4,23 @@
         version="3.0">
 
     <servlet>
-        <servlet-name>Jersey Web Application</servlet-name>
+    	<!-- Le nom de la servlet est "Loan" -->
+        <servlet-name>Loan</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        
+        <!-- 	Jersey va utiliser les classes du package "fr.iut.loan.service"
+        		Mais on peut ajouter d'autre packages dans lesquels on va pouvoir
+        		definir des Configurations, des gestionnaire d'erreur etc.. -->
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>fr.iut.loan</param-value>
+            <param-value>fr.iut.loan.service</param-value>
         </init-param>
+		
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Jersey Web Application</servlet-name>
+    	<!-- La servlet "Loan" prend en charge toutes les requetes. -->
+        <servlet-name>Loan</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>

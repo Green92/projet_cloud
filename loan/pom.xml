@@ -26,11 +26,25 @@
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
         </dependency>
-        <!-- uncomment this to get JSON support
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-moxy</artifactId>
-        </dependency> -->
+        <!-- JSON support -->
+        <!-- http://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy -->
+		<dependency>
+		    <groupId>org.glassfish.jersey.media</groupId>
+		    <artifactId>jersey-media-moxy</artifactId>
+		</dependency>
+
+		
+		<!-- Unit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>2.0.2-beta</version>
+		</dependency>
 
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
