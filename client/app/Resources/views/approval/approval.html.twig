@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Account ID</th>
+            <th>Amount</th>
+            <th>Name</th>
+            <th>Response</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for id, user in data %}
+                <tr>
+                    {% for key, field in user %}
+                        <td>{{ field }}</td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ path('edit_approval', {'id': id}) }}" type="button" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
