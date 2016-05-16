@@ -49,7 +49,7 @@ public class ApprovalResource {
 		Approval app = new Approval();
 		
 		app.setAccountId((Long) e.getProperty("accountId"));
-		app.setAmount((Integer) e.getProperty("amount"));
+		app.setAmount(((Long) e.getProperty("amount")).intValue());
 		app.setNomResponsable((String) e.getProperty("nom"));
 		app.setReponseManuelle((String) e.getProperty("reponseManuelle"));
 		
