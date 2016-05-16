@@ -19,10 +19,15 @@ class AccountController extends Controller
 {
     private $client;
 
+    private $checkRiskClient;
+
     public function __construct()
     {
         $this->client = new GuzzleHttp\Client([
             'base_uri' => 'http://1.accmanager-1310.appspot.com/account/'
+        ]);
+        $this->checkRiskClient = new GuzzleHttp\Client([
+            'base_uri' => 'https://checkaccount.herokuapp.com/checkaccount/risk/'
         ]);
     }
 
@@ -141,6 +146,28 @@ class AccountController extends Controller
         else {
             $this->get('session')->getFlashBag()->add('error',
                 'Account has not been deleted.'
+            );
+        }
+
+        return $this->redirectToRoute('get_account');
+    }
+
+    /**
+     * @Route("/{id}/getRisk", name="get_risk_account")
+     */
+    public function getRiskAction($id)
+    {
+        $response = $this->checkRiskClient->request('GET', $id);
+        $risk = json_decode($response->getBody(), true);
+
+        if ($response->getStatusCode() == 200) {
+            $this->get('session')->getFlashBag()->add('notice',
+                sprintf('Risk is %s', $risk['risque'])
+            );
+        }
+        else {
+            $this->get('session')->getFlashBag()->add('error',
+                'An error occurred during check risk request.'
             );
         }
 

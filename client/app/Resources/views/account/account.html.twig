@@ -20,13 +20,16 @@
                             <td>{{ field }}</td>
                         {% endfor %}
                         <td>
-                            <a href="{{ path('request_loan', {'id':id}) }}" type="button" class="btn btn-info">
+                            <a href="{{ path('get_risk_account', {'id': id}) }}" type="button" class="btn btn-info">
+                                <span class=" glyphicon glyphicon glyphicon-euro" aria-hidden="true"></span>
+                            </a>
+                            <a href="{{ path('request_loan', {'id': id}) }}" type="button" class="btn btn-success">
                                 <span class=" glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </a>
-                            <a href="{{ path('edit_account', {'id':id}) }}" type="button" class="btn btn-warning">
+                            <a href="{{ path('edit_account', {'id': id}) }}" type="button" class="btn btn-warning">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             </a>
-                            <a href="{{ path('delete_account', {'id':id}) }}" type="button" class="btn btn-danger">
+                            <a href="{{ path('delete_account', {'id': id}) }}" type="button" class="btn btn-danger">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </a>
                         </td>
