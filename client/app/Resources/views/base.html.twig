@@ -41,6 +41,9 @@
                             <li role="presentation" {{ 'get_approval' == app.request.attributes.get('_route') ? 'class="active"': '' }}>
                                 <a href="{{ path('get_approval') }}">Approval</a>
                             </li>
+                            {#<li role="presentation" {{ 'loan' == app.request.attributes.get('_route') ? 'class="active"': '' }}>#}
+                                {#<a href="{{ path('loan') }}">Loan</a>#}
+                            {#</li>#}
                         </ul>
                         {% block content %}
 

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="col-xs-12" style="margin-top: 20px">
+        <h3>Request Approval</h3>
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" class="btn btn-default pull-right" value="Request" />
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

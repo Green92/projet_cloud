@@ -53,7 +53,7 @@ class AccountController extends Controller
         }
         else {
             $this->get('session')->getFlashBag()->add('error',
-                'An error occured while retrieving accounts.'
+                'An error occurred while retrieving accounts.'
             );
         }
 
