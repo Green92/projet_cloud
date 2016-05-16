@@ -12,16 +12,21 @@ use GuzzleHttp;
  */
 class ApprovalController extends Controller
 {
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = new GuzzleHttp\Client([
+            'base_uri' => 'http://1.appmanager-1311.appspot.com/approval/'
+        ]);
+    }
+
     /**
      * @Route("", name="get_approval")
      */
     public function getApprovalAction(Request $request)
     {
-        $client = new GuzzleHttp\Client([
-            'base_uri' => 'http://1.appmanager-1311.appspot.com/'
-        ]);
-
-        $response = $client->request('GET', 'approval');
+        $response = $this->client->request('GET');
 
         if ($response->getStatusCode() == 200 && $response->getBody()) {
             $data = json_decode($response->getBody(), true);
@@ -30,5 +35,15 @@ class ApprovalController extends Controller
         return $this->render('approval/approval.html.twig', array(
             'data' => $data
         ));
+    }
+
+    /**
+     * @Route("/{id}/delete", name="delete_approval")
+     */
+    public function deleteAction($id)
+    {
+        $response = $this->client->request('DELETE', $id);
+
+        return $this->redirectToRoute('get_approval');
     }
 }

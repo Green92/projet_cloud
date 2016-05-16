@@ -2,8 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Account;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp;
 
@@ -21,6 +26,21 @@ class AccountController extends Controller
         ]);
     }
 
+    private function getAddForm($account)
+    {
+        return $this->createFormBuilder($account)
+            ->add('firstName', TextType::class, array('required' => true))
+            ->add('lastName', TextType::class, array('required' => true))
+            ->add('risk', ChoiceType::class, array(
+                'choices'  => array(
+                    'high' => "high",
+                    'low' => "low"
+                )
+            ))
+            ->add('amount', NumberType::class, array('required' => true))
+            ->getForm();
+    }
+
     /**
      * @Route("", name="get_account")
      */
@@ -32,7 +52,23 @@ class AccountController extends Controller
             $data = json_decode($response->getBody(), true);
         }
 
+        $account = new Account();
+        $form = $this->getAddForm($account);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $response = $this->client->request('POST', null, [
+                'json' => $account->getApiArray()
+            ]);
+
+
+            return $this->redirectToRoute('get_account');
+        }
+
         return $this->render('account/account.html.twig', array(
+            'form' => $form->createView(),
             'data' => $data
         ));
     }
