@@ -23,7 +23,25 @@
     <![endif]-->
 </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="jumbotron">
+                        <h1>Loan Approval</h1>
+                    </div>
+                    <div class="col-xs-12">
+                        <ul class="nav nav-pills">
+                            <li role="presentation" {{ 'homepage' == app.request.attributes.get('_route') ? 'class="active"': '' }}><a href="{{ path('homepage') }}">Home</a></li>
+                            <li role="presentation" {{ 'get_account' == app.request.attributes.get('_route') ? 'class="active"': '' }}><a href="{{ path('get_account') }}">Account</a></li>
+                            <li role="presentation" {{ 'get_approval' == app.request.attributes.get('_route') ? 'class="active"': '' }}><a href="{{ path('get_approval') }}">Approval</a></li>
+                        </ul>
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
         {% block javascripts %}
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

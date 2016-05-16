@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Risque</th>
+            <th>Montant</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for id, user in data %}
+                <tr>
+                    {% for key, field in user %}
+                        <td>{{ field }}</td>
+                    {% endfor %}
+                    <td>
+                        {#<a href="{{ path('admin_user_delete', {'id':user.id}) }}" type="button" class="btn btn-warning">#}
+                        <a href="" type="button" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <tr>
+            {#<td>{{ user.email }}</td>#}
+            {#<td>#}
+                {#{% for role in user.roles %}#}
+                    {#{{ role }}#}
+                    {#<br>#}
+                {#{% endfor %}#}
+            {#</td>#}
+            {#<td>#}
+                {#<a href="{{ path('admin_user_delete', {'id':user.id}) }}" type="button" class="btn btn-warning">#}
+                    {#<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>#}
+                {#</a>#}
+            {#</td>#}
+        </tr>
+{% endblock %}
