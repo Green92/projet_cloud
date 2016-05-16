@@ -14,8 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import com.badsheepcorp.accmanager.business.Account;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -151,7 +151,7 @@ public class AccountResource {
 	public Response createAccount(Account account) {
 		
 		if (!isValidAccount(account)) {
-			return Response.status(422).entity("Unprocessable entity").encoding("utf-8").build();
+			return getUnprocessableEntityResponse();
 		}
 		
 		Key key = getDataStore().put(accountToEntity(account));
@@ -194,7 +194,7 @@ public class AccountResource {
 		}
 		
 		if (account.getRisque() != null) {
-			if (!account.getRisque().equals("high") || !account.getRisque().equals("low")) {
+			if (!account.getRisque().equals("high") && !account.getRisque().equals("low")) {
 				return getUnprocessableEntityResponse();
 			}
 			e.setProperty("risque", account.getRisque());

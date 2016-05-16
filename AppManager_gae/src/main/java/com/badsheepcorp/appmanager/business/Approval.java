@@ -17,6 +17,7 @@ public class Approval {
 	@NotEmpty
 	private String nom;
 	
+	@NotNull
 	private String reponseManuelle;
 
 	public Long getAccountId() {
@@ -47,6 +48,8 @@ public class Approval {
 	@AssertTrue(message="Property reponseManuelle only accepts null, \"accepted\" and \"refused\" values.")
 	public boolean isReponseManuelleCorrecte() {
 		return reponseManuelle == null ? true :
-				reponseManuelle.equals("accepted") || reponseManuelle.equals("refused");
+				reponseManuelle.equals("accepted") || 
+				reponseManuelle.equals("refused") || 
+				reponseManuelle.equals("pending");
 	}
 }

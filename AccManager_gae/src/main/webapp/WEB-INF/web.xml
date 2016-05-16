@@ -6,7 +6,6 @@
 	    <init-param>
 	        <param-name>jersey.config.server.provider.packages</param-name>
 	        <param-value>
-	        	com.badsheepcorp.accmanager.config;
 	        	com.badsheepcorp.accmanager.service;
 	        	com.badsheepcorp.accmanager.exmapper;
 	        </param-value>
