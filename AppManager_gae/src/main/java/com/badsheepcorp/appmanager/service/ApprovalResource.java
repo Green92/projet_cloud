@@ -49,7 +49,8 @@ public class ApprovalResource {
 		Approval app = new Approval();
 		
 		app.setAccountId((Long) e.getProperty("accountId"));
-		app.setNom((String) e.getProperty("nom"));
+		app.setAmount((Integer) e.getProperty("amount"));
+		app.setNomResponsable((String) e.getProperty("nom"));
 		app.setReponseManuelle((String) e.getProperty("reponseManuelle"));
 		
 		return app;
@@ -59,7 +60,8 @@ public class ApprovalResource {
 		Entity e = new Entity("Approval");
 		
 		e.setProperty("accountId", app.getAccountId());
-		e.setProperty("nom", app.getNom());
+		e.setProperty("amount", app.getAmount());
+		e.setProperty("nom", app.getNomResponsable());
 		e.setProperty("reponseManuelle", app.getReponseManuelle());
 		
 		return e;
@@ -144,7 +146,8 @@ public class ApprovalResource {
 		}
 		
 		e.setProperty("accountId", approval.getAccountId());
-		e.setProperty("nom", approval.getNom());
+		e.setProperty("amount", approval.getAmount());
+		e.setProperty("nom", approval.getNomResponsable());
 		e.setProperty("reponseManuelle", approval.getReponseManuelle());
 		
 		getDataStore().put(e);
