@@ -14,8 +14,11 @@ public class Approval {
 	private Long accountId;
 	
 	@NotNull
+	private Integer amount;
+	
+	@NotNull
 	@NotEmpty
-	private String nom;
+	private String nomResponsable;
 	
 	@NotNull
 	private String reponseManuelle;
@@ -28,12 +31,20 @@ public class Approval {
 		this.accountId = accountId;
 	}
 
-	public String getNom() {
-		return nom;
+	public Integer getAmount() {
+		return amount;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	public String getNomResponsable() {
+		return nomResponsable;
+	}
+
+	public void setNomResponsable(String nom) {
+		this.nomResponsable = nom;
 	}
 
 	public String getReponseManuelle() {
