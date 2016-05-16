@@ -12,16 +12,21 @@ use GuzzleHttp;
  */
 class AccountController extends Controller
 {
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = new GuzzleHttp\Client([
+            'base_uri' => 'http://1.accmanager-1310.appspot.com/account/'
+        ]);
+    }
+
     /**
      * @Route("", name="get_account")
      */
-    public function accountAction(Request $request)
+    public function getAccountAction(Request $request)
     {
-        $client = new GuzzleHttp\Client([
-            'base_uri' => 'http://1.accmanager-1310.appspot.com'
-        ]);
-
-        $response = $client->request('GET', 'account');
+        $response = $this->client->request('GET');
 
         if ($response->getStatusCode() == 200 && $response->getBody()) {
             $data = json_decode($response->getBody(), true);
@@ -30,5 +35,15 @@ class AccountController extends Controller
         return $this->render('account/account.html.twig', array(
             'data' => $data
         ));
+    }
+
+    /**
+     * @Route("/{id}/delete", name="delete_account")
+     */
+    public function deleteAction($id)
+    {
+        $response = $this->client->request('DELETE', $id);
+
+        return $this->redirectToRoute('get_account');
     }
 }

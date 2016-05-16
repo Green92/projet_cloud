@@ -18,8 +18,7 @@
                         <td>{{ field }}</td>
                     {% endfor %}
                     <td>
-                        {#<a href="{{ path('admin_user_delete', {'id':user.id}) }}" type="button" class="btn btn-warning">#}
-                        <a href="" type="button" class="btn btn-warning">
+                        <a href="{{ path('delete_account', {'id':id}) }}" type="button" class="btn btn-warning">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </a>
                     </td>

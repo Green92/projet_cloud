@@ -15,7 +15,7 @@ class ApprovalController extends Controller
     /**
      * @Route("", name="get_approval")
      */
-    public function approvalAction(Request $request)
+    public function getApprovalAction(Request $request)
     {
         $client = new GuzzleHttp\Client([
             'base_uri' => 'http://1.appmanager-1311.appspot.com/'
