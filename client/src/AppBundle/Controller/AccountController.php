@@ -44,7 +44,7 @@ class AccountController extends Controller
     /**
      * @Route("", name="get_account")
      */
-    public function getAccountAction(Request $request)
+    public function getAction(Request $request)
     {
         $response = $this->client->request('GET');
 
@@ -63,13 +63,39 @@ class AccountController extends Controller
                 'json' => $account->getApiArray()
             ]);
 
-
             return $this->redirectToRoute('get_account');
         }
 
         return $this->render('account/account.html.twig', array(
             'form' => $form->createView(),
             'data' => $data
+        ));
+    }
+
+    /**
+     * @Route("/{id}/edit", name="edit_account")
+     */
+    public function editAction($id, Request $request)
+    {
+        $response = $this->client->request('GET', $id);
+
+        $account = new Account();
+        $account->loadApiJson($response->getBody());
+
+        $form = $this->getAddForm($account);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $response = $this->client->request('PUT', $id, [
+                'json' => $account->getApiArray()
+            ]);
+
+            return $this->redirectToRoute('get_account');
+        }
+
+        return $this->render('account/edit.html.twig', array(
+            'form' => $form->createView()
         ));
     }
 

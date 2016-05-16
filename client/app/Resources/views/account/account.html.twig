@@ -20,7 +20,10 @@
                             <td>{{ field }}</td>
                         {% endfor %}
                         <td>
-                            <a href="{{ path('delete_account', {'id':id}) }}" type="button" class="btn btn-warning">
+                            <a href="{{ path('edit_account', {'id':id}) }}" type="button" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            </a>
+                            <a href="{{ path('delete_account', {'id':id}) }}" type="button" class="btn btn-danger">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </a>
                         </td>

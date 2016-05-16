@@ -7,7 +7,7 @@ class Account
 {
     private $id;
 
-    private $firstname;
+    private $firstName;
 
     private $lastName;
 
@@ -34,17 +34,17 @@ class Account
     /**
      * @return mixed
      */
-    public function getFirstname()
+    public function getFirstName()
     {
-        return $this->firstname;
+        return $this->firstName;
     }
 
     /**
      * @param mixed $firstname
      */
-    public function setFirstname($firstname)
+    public function setFirstName($firstName)
     {
-        $this->firstname = $firstname;
+        $this->firstName = $firstName;
     }
 
     /**
@@ -98,12 +98,22 @@ class Account
     public function getApiArray()
     {
         $account = array(
-            "nom" => $this->getFirstname(),
+            "nom" => $this->getFirstName(),
             "prenom" => $this->getLastName(),
             "risque" => $this->getRisk(),
             "solde" => (string) $this->getAmount()
         );
 
         return $account;
+    }
+
+    public function loadApiJson($json)
+    {
+        $account = json_decode($json, true);
+
+        $this->setFirstName($account['nom'] ?? null);
+        $this->setLastName($account['prenom'] ?? null);
+        $this->setRisk($account['risque'] ?? null);
+        $this->setAmount($account['solde'] ?? null);
     }
 }
