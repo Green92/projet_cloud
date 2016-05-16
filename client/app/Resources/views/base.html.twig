@@ -13,6 +13,7 @@
         <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <!-- Bootstrap -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -31,9 +32,15 @@
                     </div>
                     <div class="col-xs-12">
                         <ul class="nav nav-pills">
-                            <li role="presentation" {{ 'homepage' == app.request.attributes.get('_route') ? 'class="active"': '' }}><a href="{{ path('homepage') }}">Home</a></li>
-                            <li role="presentation" {{ 'get_account' == app.request.attributes.get('_route') ? 'class="active"': '' }}><a href="{{ path('get_account') }}">Account</a></li>
-                            <li role="presentation" {{ 'get_approval' == app.request.attributes.get('_route') ? 'class="active"': '' }}><a href="{{ path('get_approval') }}">Approval</a></li>
+                            <li role="presentation" {{ 'homepage' == app.request.attributes.get('_route') ? 'class="active"': '' }}>
+                                <a href="{{ path('homepage') }}">Home</a>
+                            </li>
+                            <li role="presentation" {{ 'get_account' == app.request.attributes.get('_route') ? 'class="active"': '' }}>
+                                <a href="{{ path('get_account') }}">Account</a>
+                            </li>
+                            <li role="presentation" {{ 'get_approval' == app.request.attributes.get('_route') ? 'class="active"': '' }}>
+                                <a href="{{ path('get_approval') }}">Approval</a>
+                            </li>
                         </ul>
                         {% block content %}
 
@@ -47,6 +54,22 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
             <!-- Include all compiled plugins (below), or include individual files as needed -->
             <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+            <script src="{{ asset('assets/css/toasterConfig.js') }}"></script>
+            <script>
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                toastr.info('{{ flashMessage }}');
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                toastr.success('{{ flashMessage }}');
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('warning') %}
+                toastr.warning('{{ flashMessage }}');
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                toastr.error('{{ flashMessage }}');
+                {% endfor %}
+            </script>
         {% endblock %}
     </body>
 </html>

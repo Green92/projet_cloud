@@ -4,10 +4,10 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>N° compte</th>
-            <th>Montant</th>
-            <th>Nom</th>
-            <th>Reponse</th>
+            <th>Account ID</th>
+            <th>Amount</th>
+            <th>Name</th>
+            <th>Response</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -18,8 +18,8 @@
                         <td>{{ field }}</td>
                     {% endfor %}
                     <td>
-                        <a href="{{ path('delete_approval', {'id':id}) }}" type="button" class="btn btn-warning">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        <a href="{{ path('edit_approval', {'id': id}) }}" type="button" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </a>
                     </td>
                 </tr>

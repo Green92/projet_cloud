@@ -51,6 +51,11 @@ class AccountController extends Controller
         if ($response->getStatusCode() == 200 && $response->getBody()) {
             $data = json_decode($response->getBody(), true);
         }
+        else {
+            $this->get('session')->getFlashBag()->add('error',
+                'An error occured while retrieving accounts.'
+            );
+        }
 
         $account = new Account();
         $form = $this->getAddForm($account);
@@ -63,12 +68,23 @@ class AccountController extends Controller
                 'json' => $account->getApiArray()
             ]);
 
+            if ($response->getStatusCode() == 201) {
+                $this->get('session')->getFlashBag()->add('success',
+                    'Account has been created.'
+                );
+            }
+            else {
+                $this->get('session')->getFlashBag()->add('error',
+                    'Account has not been created.'
+                );
+            }
+
             return $this->redirectToRoute('get_account');
         }
 
         return $this->render('account/account.html.twig', array(
             'form' => $form->createView(),
-            'data' => $data
+            'data' => $data ?? null
         ));
     }
 
@@ -91,6 +107,17 @@ class AccountController extends Controller
                 'json' => $account->getApiArray()
             ]);
 
+            if ($response->getStatusCode() == 204) {
+                $this->get('session')->getFlashBag()->add('success',
+                    'Account has been modified.'
+                );
+            }
+            else {
+                $this->get('session')->getFlashBag()->add('error',
+                    'Account has not been modified.'
+                );
+            }
+
             return $this->redirectToRoute('get_account');
         }
 
@@ -105,6 +132,17 @@ class AccountController extends Controller
     public function deleteAction($id)
     {
         $response = $this->client->request('DELETE', $id);
+
+        if ($response->getStatusCode() == 204) {
+            $this->get('session')->getFlashBag()->add('success',
+                'Account has been deleted.'
+            );
+        }
+        else {
+            $this->get('session')->getFlashBag()->add('error',
+                'Account has not been deleted.'
+            );
+        }
 
         return $this->redirectToRoute('get_account');
     }
