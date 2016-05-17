@@ -104,3 +104,11 @@ To run the service locally :
 ##Loan Approval client :
 
 Service is runnig at [https://loan-client.herokuapp.com](https://loan-client.herokuapp.com).
+
+Install dependencies :
+
+    $ composer install 
+
+Run the client locally :
+
+    $ php bin/console server:run 
