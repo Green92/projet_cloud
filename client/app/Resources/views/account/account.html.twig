@@ -20,6 +20,9 @@
                             <td>{{ field }}</td>
                         {% endfor %}
                         <td>
+                            <a href="{{ path('status_loan', {'id': id}) }}" type="button" class="btn btn-default">
+                                <span class=" glyphicon glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </a>
                             <a href="{{ path('get_risk_account', {'id': id}) }}" type="button" class="btn btn-info">
                                 <span class=" glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </a>

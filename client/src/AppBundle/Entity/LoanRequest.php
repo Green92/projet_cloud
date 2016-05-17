@@ -50,4 +50,13 @@ class LoanRequest
 
         return $request;
     }
+
+    public function getApiWithoutAmountArray()
+    {
+        $request = array(
+            "accountId" => $this->getAccountId()
+        );
+
+        return $request;
+    }
 }
