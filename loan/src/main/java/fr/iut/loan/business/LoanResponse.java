@@ -9,6 +9,14 @@ public class LoanResponse {
 	@NotNull
 	private String reponseManuelle;
 	
+	public LoanResponse() {
+		
+	}
+	
+	public LoanResponse(String reponseManuelle) {
+		this.reponseManuelle = reponseManuelle;
+	}
+	
 	public String getReponseManuelle() {
 		return reponseManuelle;
 	}

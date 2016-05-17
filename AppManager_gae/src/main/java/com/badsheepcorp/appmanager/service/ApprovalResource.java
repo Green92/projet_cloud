@@ -49,7 +49,7 @@ public class ApprovalResource {
 		Approval app = new Approval();
 		
 		app.setAccountId((Long) e.getProperty("accountId"));
-		app.setAmount((Integer) e.getProperty("amount"));
+		app.setAmount(((Long) e.getProperty("amount")).intValue());
 		app.setNomResponsable((String) e.getProperty("nom"));
 		app.setReponseManuelle((String) e.getProperty("reponseManuelle"));
 		
@@ -57,7 +57,7 @@ public class ApprovalResource {
 	}
 	
 	private Entity approvalToEntity(Approval app) {
-		Entity e = new Entity("Approval");
+		Entity e = new Entity(KeyFactory.createKey("approval", app.getAccountId()));
 		
 		e.setProperty("accountId", app.getAccountId());
 		e.setProperty("amount", app.getAmount());

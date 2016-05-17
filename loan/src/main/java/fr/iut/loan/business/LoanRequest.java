@@ -7,7 +7,6 @@ public class LoanRequest {
 	@NotNull
 	private Long accountId;
 	
-	@NotNull
 	private Integer amount;
 
 	public Long getAccountId() {
