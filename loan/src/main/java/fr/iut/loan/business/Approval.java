@@ -1,4 +1,4 @@
-package com.badsheepcorp.appmanager.business;
+package fr.iut.loan.business;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;

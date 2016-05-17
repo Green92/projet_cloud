@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 
 import fr.iut.loan.business.Account;
+import fr.iut.loan.business.Approval;
 import fr.iut.loan.business.LoanRequest;
 import fr.iut.loan.business.LoanResponse;
 import fr.iut.loan.business.Risque;
@@ -29,8 +30,11 @@ public class LoanResource {
 	public static final String ACC_MANAGER_SERVICE_URI =
 			"http://1.accmanager-1310.appspot.com/account";
 	
+	public static final String APP_MANAGER_SERVICE_URI =
+			"http://1.appmanager-1311.appspot.com/approval";
+	
 	public static final String APP_MANAGER_SERVICE_URI_TEMPLATE =
-			"https://1.accmanager-1311.appspot.com/approval/{id}";
+			APP_MANAGER_SERVICE_URI + "/{id}";
 	
 	private Boolean isRiskyToLendTo(Long accountId) {
 		
@@ -67,27 +71,51 @@ public class LoanResource {
 		}
 	}
 	
-/*	private void checkApproval(Long accountId) {
+	private void creerApproval(LoanRequest lr) {
+		Approval app = new Approval();
+		app.setAccountId(lr.getAccountId());
+		app.setNomResponsable(null);
+		app.setReponseManuelle("pending");
+		app.setAmount(lr.getAmount());
+		
+		WebTarget target = new JerseyClientBuilder().build().
+				target(APP_MANAGER_SERVICE_URI);
+		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(app));
+		
+		if (response.getStatus() != 201) {
+			throw new RuntimeException("Error!");
+		}
+	}
+	
+	private Approval getApproval(Long accountId) {
 		WebTarget target = new JerseyClientBuilder().build().
 				target(APP_MANAGER_SERVICE_URI_TEMPLATE)
 				.resolveTemplate("id", accountId);
-		
 		Response response = target.request(MediaType.APPLICATION_JSON).get();
 		
-	}*/
-	
-/*	private Boolean hasApproval(Long accountId) {
-		WebTarget target = new JerseyClientBuilder().build().
-				target(String.format("%s/%s", APP_MANAGER_SERVICE_URI_TEMPLATE, accountId))
-				.resolveTemplate("id", accountId);
-		Response response = target.request(MediaType.APPLICATION_JSON).get();
+		if (response.getStatus() == 404) {
+			return null;
+		}
 		
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Requested service unvailable.");
 		}
 		
-		return null;
-	}*/
+		Approval approval = response.readEntity(Approval.class);
+		
+		return approval;
+	}
+	
+	private void deleteApproval(Long accountId) {
+		WebTarget target = new JerseyClientBuilder().build().
+				target(APP_MANAGER_SERVICE_URI_TEMPLATE)
+				.resolveTemplate("id", accountId);
+		Response response = target.request(MediaType.APPLICATION_JSON).delete();
+		
+		if (response.getStatus() != 204) {
+			throw new RuntimeException("Error.");
+		}
+	}
 	
 	
 	@POST
@@ -96,32 +124,40 @@ public class LoanResource {
 	public Response requestLoan(LoanRequest loanRequest) {
 		LoanResponse response = new LoanResponse();
 		
+		Approval approval = getApproval(loanRequest.getAccountId());
+		
+		if (approval != null) {
+			if (approval.getReponseManuelle().equals("pending")) {
+				return Response.status(Status.ACCEPTED)
+						.entity(new LoanResponse(approval.getReponseManuelle()))
+						.build();
+			} else {
+				if (response.getReponseManuelle().equals("accepted")) {
+					creditAccount(loanRequest.getAccountId(), approval.getAmount());
+				}
+				deleteApproval(loanRequest.getAccountId());
+				return Response.status(Status.ACCEPTED)
+						.entity(new LoanResponse(approval.getReponseManuelle()))
+						.build();
+			}
+		}
+		
 		if (loanRequest.getAmount() < SEUIL) {
 			if (!isRiskyToLendTo(loanRequest.getAccountId())) {
 				response.setReponseManuelle("approved");
 				creditAccount(loanRequest.getAccountId(), loanRequest.getAmount());
+				return Response.status(Status.ACCEPTED)
+						.entity(new LoanResponse("accepted"))
+						.build();
 			}
 		}
 		
-		//TODO Terminer ce code.
-		
-		//Si Si le compte a deja une demande en cours 
-			//Si elle est disponible
-				//on revoi (return) la réponse.
-			//Sinon
-				//on previent (return) que c'est en attente.
-		//Sinon 
-			//Si le client est serieux
-			if (!isRiskyToLendTo(loanRequest.getAccountId())) {
-				//et si la somme demandee est en dessous du seuil fixe.
-				if (loanRequest.getAmount() < SEUIL) {
-					//On ouvre le robinet.
-				}
-			}
+		if (loanRequest.getAmount() == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
 			
-		//on enregistre une demande dans app manager.
+		creerApproval(loanRequest);
 		
-		//TODO Enlever ce test.
 		return Response.status(Status.ACCEPTED)
 				.entity(response).build();
 		
