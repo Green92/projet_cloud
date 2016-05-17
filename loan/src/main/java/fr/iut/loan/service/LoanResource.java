@@ -149,6 +149,10 @@ public class LoanResource {
 				}
 			}
 			
+			if (loanRequest.getAmount() == null) {
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+			
 			if (loanRequest.getAmount() < SEUIL) {
 				if (!isRiskyToLendTo(loanRequest.getAccountId())) {
 					response.setReponseManuelle("approved");
@@ -157,10 +161,6 @@ public class LoanResource {
 							.entity(new LoanResponse("accepted"))
 							.build();
 				}
-			}
-			
-			if (loanRequest.getAmount() == null) {
-				return Response.status(Status.BAD_REQUEST).build();
 			}
 				
 			creerApproval(loanRequest);

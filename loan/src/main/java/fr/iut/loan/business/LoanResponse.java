@@ -26,7 +26,7 @@ public class LoanResponse {
 	}
 	
 	@XmlTransient
-	@AssertTrue(message="Property reponseManuelle only accepts null, \"accepted\" and \"refused\" values.")
+	@AssertTrue(message="Property reponseManuelle only accepts \"pending\", \"accepted\" and \"refused\" values.")
 	public boolean isReponseManuelleCorrecte() {
 		return reponseManuelle == null ? true :
 				reponseManuelle.equals("accepted") || 
