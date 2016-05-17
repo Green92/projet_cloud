@@ -150,7 +150,7 @@ public class LoanResource {
 			}
 			
 			if (loanRequest.getAmount() == null) {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.NOT_FOUND).build();
 			}
 			
 			if (loanRequest.getAmount() < SEUIL) {
