@@ -55,7 +55,7 @@
             <!-- Include all compiled plugins (below), or include individual files as needed -->
             <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-            <script src="{{ asset('assets/css/toasterConfig.js') }}"></script>
+            <script src="{{ asset('assets/js/toasterConfig.js') }}"></script>
             <script>
                 {% for flashMessage in app.session.flashbag.get('notice') %}
                 toastr.info('{{ flashMessage }}');
