@@ -3,6 +3,7 @@
 Par Julien Kermes et Grégoire Chamberland.
 
 Fait par Grégoire : Account Manager, ApprovalManager, Loan service
+
 Fait par Julien : Check Account, Loan Service, Client
 
 ##Account Manager :
