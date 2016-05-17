@@ -8,6 +8,8 @@ Fait par Julien : Check Account, Loan Service, Client
 
 ##Account Manager :
 
+Deployed on Google App engine
+
 Service is running at [http://1.accmanager-1310.appspot.com](http://1.accmanager-1310.appspot.com).
 
 CRUD action are possible with these HTTP requests :
@@ -26,6 +28,8 @@ To run the service locally :
     $ mvn appengine:devserver
 
 ##Approval Manager :
+
+Deployed on Google App engine.
 
 Service is running at [http://1.appmanager-1311.appspot.com](http://1.appmanager-1311.appspot.com).
 
@@ -46,6 +50,12 @@ To run the service locally :
 
 ##Check Account :
 
+Deployed on Heroku.
+
+
+Call Account Manager service.
+
+
 Service is runnig at [https://checkaccount.herokuapp.com/checkaccount](https://checkaccount.herokuapp.com/checkaccount).
 
 Only GET action is possible with this HTTP request :
@@ -60,6 +70,28 @@ To run the service locally :
     $ mvn tomcat:run 
 
 ##Loan service :
+
+Deployed on Heroku.
+
+
+Call Approval Manager to know if a loan request has been submitted for the specified account
+
+If yes
+
+ If it is pending, then return a pending response
+
+ Otherwise return the response and call Approval manager to delete the loan request (credit account if accepted)
+
+If no loan request exists for this account
+
+ If it is risky to lend to the specified customer
+
+  Create an Approval request by calling Approval manager
+
+ Otherwise
+
+  Give the requested amount by calling Account manager
+
 
 Only POST request is allowed. You have to provide a JSON entity : {"accountId": long, "amount": int}
 
