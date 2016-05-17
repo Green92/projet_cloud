@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.client.JerseyClientBuilder;
 
+import exception.ServiceErrorException;
 import fr.iut.loan.business.Account;
 import fr.iut.loan.business.Approval;
 import fr.iut.loan.business.LoanRequest;
@@ -36,7 +37,11 @@ public class LoanResource {
 	public static final String APP_MANAGER_SERVICE_URI_TEMPLATE =
 			APP_MANAGER_SERVICE_URI + "/{id}";
 	
-	private Boolean isRiskyToLendTo(Long accountId) {
+	public static final String CHECK_ACCOUNT = "checkAccount";
+	public static final String ACCOUNT_MANAGER = "accountManager";
+	public static final String APPROVAL_MANAGER = "approvalManager";
+	
+	private Boolean isRiskyToLendTo(Long accountId) throws ServiceErrorException {
 		
 		WebTarget target = new JerseyClientBuilder().build().
 				target(CHECK_ACCOUNT_SERVICE_URI_TEMPLATE)
@@ -45,7 +50,7 @@ public class LoanResource {
 		Response response = target.request(MediaType.APPLICATION_JSON).get();
 		
 		if (response.getStatus() != 200) {
-			throw new RuntimeException("Requested service unvailable.");
+			throw new ServiceErrorException(CHECK_ACCOUNT, response);
 		}
 		
 		Risque risk = response.readEntity(Risque.class);
@@ -53,12 +58,12 @@ public class LoanResource {
 		return risk.getRisque().equals("high");
 	}
 	
-	private void creditAccount(Long accountId, int amount) {
+	private void creditAccount(Long accountId, int amount) throws ServiceErrorException {
 		WebTarget target = new JerseyClientBuilder().build().target(String.format("%s/%s", ACC_MANAGER_SERVICE_URI, accountId));
 		Response response = target.request(MediaType.APPLICATION_JSON).get();
 		
 		if (response.getStatus() != 200) {
-			throw new RuntimeException("Requested service unvailable.");
+			throw new ServiceErrorException(ACCOUNT_MANAGER, response);
 		}
 		
 		Account account = response.readEntity(Account.class);
@@ -67,11 +72,11 @@ public class LoanResource {
 		response = target.request(MediaType.APPLICATION_JSON).put(Entity.json(account));
 		
 		if (response.getStatus() != 204) {
-			throw new RuntimeException("Requested service unvailable.");
+			throw new ServiceErrorException(ACCOUNT_MANAGER, response);
 		}
 	}
 	
-	private void creerApproval(LoanRequest lr) {
+	private void creerApproval(LoanRequest lr) throws ServiceErrorException {
 		Approval app = new Approval();
 		app.setAccountId(lr.getAccountId());
 		app.setNomResponsable(null);
@@ -83,11 +88,11 @@ public class LoanResource {
 		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(app));
 		
 		if (response.getStatus() != 201) {
-			throw new RuntimeException("Error!");
+			throw new ServiceErrorException(APPROVAL_MANAGER, response);
 		}
 	}
 	
-	private Approval getApproval(Long accountId) {
+	private Approval getApproval(Long accountId) throws ServiceErrorException {
 		WebTarget target = new JerseyClientBuilder().build().
 				target(APP_MANAGER_SERVICE_URI_TEMPLATE)
 				.resolveTemplate("id", accountId);
@@ -98,7 +103,7 @@ public class LoanResource {
 		}
 		
 		if (response.getStatus() != 200) {
-			throw new RuntimeException("Requested service unvailable.");
+			throw new ServiceErrorException(APPROVAL_MANAGER, response);
 		}
 		
 		Approval approval = response.readEntity(Approval.class);
@@ -124,43 +129,50 @@ public class LoanResource {
 	public Response requestLoan(LoanRequest loanRequest) {
 		LoanResponse response = new LoanResponse();
 		
-		Approval approval = getApproval(loanRequest.getAccountId());
+		try {
 		
-		if (approval != null) {
-			if (approval.getReponseManuelle().equals("pending")) {
-				return Response.status(Status.ACCEPTED)
-						.entity(new LoanResponse(approval.getReponseManuelle()))
-						.build();
-			} else {
-				if (response.getReponseManuelle().equals("accepted")) {
-					creditAccount(loanRequest.getAccountId(), approval.getAmount());
-				}
-				deleteApproval(loanRequest.getAccountId());
-				return Response.status(Status.ACCEPTED)
-						.entity(new LoanResponse(approval.getReponseManuelle()))
-						.build();
-			}
-		}
-		
-		if (loanRequest.getAmount() < SEUIL) {
-			if (!isRiskyToLendTo(loanRequest.getAccountId())) {
-				response.setReponseManuelle("approved");
-				creditAccount(loanRequest.getAccountId(), loanRequest.getAmount());
-				return Response.status(Status.ACCEPTED)
-						.entity(new LoanResponse("accepted"))
-						.build();
-			}
-		}
-		
-		if (loanRequest.getAmount() == null) {
-			return Response.status(Status.BAD_REQUEST).build();
-		}
+			Approval approval = getApproval(loanRequest.getAccountId());
 			
-		creerApproval(loanRequest);
-		
-		return Response.status(Status.ACCEPTED)
-				.entity(response).build();
-		
+			if (approval != null) {
+				if (approval.getReponseManuelle().equals("pending")) {
+					return Response.status(Status.ACCEPTED)
+							.entity(new LoanResponse(approval.getReponseManuelle()))
+							.build();
+				} else {
+					if (response.getReponseManuelle().equals("accepted")) {
+						creditAccount(loanRequest.getAccountId(), approval.getAmount());
+					}
+					deleteApproval(loanRequest.getAccountId());
+					return Response.status(Status.ACCEPTED)
+							.entity(new LoanResponse(approval.getReponseManuelle()))
+							.build();
+				}
+			}
+			
+			if (loanRequest.getAmount() < SEUIL) {
+				if (!isRiskyToLendTo(loanRequest.getAccountId())) {
+					response.setReponseManuelle("approved");
+					creditAccount(loanRequest.getAccountId(), loanRequest.getAmount());
+					return Response.status(Status.ACCEPTED)
+							.entity(new LoanResponse("accepted"))
+							.build();
+				}
+			}
+			
+			if (loanRequest.getAmount() == null) {
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+				
+			creerApproval(loanRequest);
+			
+			response.setReponseManuelle("pending");
+			
+			return Response.status(Status.ACCEPTED)
+					.entity(response).build();
+			
+		} catch (ServiceErrorException e) {
+			return e.getResponse();
+		}
 	}
 	
 }

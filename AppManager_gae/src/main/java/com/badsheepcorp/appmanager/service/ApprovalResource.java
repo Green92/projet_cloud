@@ -57,7 +57,7 @@ public class ApprovalResource {
 	}
 	
 	private Entity approvalToEntity(Approval app) {
-		Entity e = new Entity(KeyFactory.createKey("approval", app.getAccountId()));
+		Entity e = new Entity(KeyFactory.createKey("Approval", app.getAccountId()));
 		
 		e.setProperty("accountId", app.getAccountId());
 		e.setProperty("amount", app.getAmount());
