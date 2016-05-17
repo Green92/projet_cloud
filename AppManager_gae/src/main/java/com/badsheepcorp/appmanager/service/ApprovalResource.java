@@ -160,7 +160,8 @@ public class ApprovalResource {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
 	public Response deleteAccount(@PathParam("id") Long id) {
 		try {
-			getDataStore().delete(KeyFactory.createKey("Approval", id));
+			Entity e = getDataStore().get(KeyFactory.createKey("Approval", id));
+			getDataStore().delete(e.getKey());
 		} catch (Exception e) {
 			return getNotFoundEntityResponse();
 		}

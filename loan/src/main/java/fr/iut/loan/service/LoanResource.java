@@ -111,14 +111,14 @@ public class LoanResource {
 		return approval;
 	}
 	
-	private void deleteApproval(Long accountId) {
+	private void deleteApproval(Long accountId) throws ServiceErrorException {
 		WebTarget target = new JerseyClientBuilder().build().
 				target(APP_MANAGER_SERVICE_URI_TEMPLATE)
 				.resolveTemplate("id", accountId);
 		Response response = target.request(MediaType.APPLICATION_JSON).delete();
 		
 		if (response.getStatus() != 204) {
-			throw new RuntimeException("Error.");
+			throw new ServiceErrorException(APPROVAL_MANAGER, response);
 		}
 	}
 	
@@ -139,10 +139,10 @@ public class LoanResource {
 							.entity(new LoanResponse(approval.getReponseManuelle()))
 							.build();
 				} else {
-					if (response.getReponseManuelle().equals("accepted")) {
+					if (approval.getReponseManuelle().equals("accepted")) {
 						creditAccount(loanRequest.getAccountId(), approval.getAmount());
 					}
-					deleteApproval(loanRequest.getAccountId());
+					deleteApproval(approval.getAccountId());
 					return Response.status(Status.ACCEPTED)
 							.entity(new LoanResponse(approval.getReponseManuelle()))
 							.build();
