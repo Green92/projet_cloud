@@ -1,5 +1,11 @@
 # projet_cloud
 
+Par Julien Kermes et Grégoire Chamberland.
+
+Fait par Grégoire : Account Manager, ApprovalManager, Loan service
+
+Fait par Julien : Check Account, Loan Service, Client
+
 ##Account Manager :
 
 Service is running at [http://1.accmanager-1310.appspot.com](http://1.accmanager-1310.appspot.com).
@@ -52,6 +58,16 @@ Example:
 To run the service locally : 
 
     $ mvn tomcat:run 
+
+##Loan service :
+
+Only POST request is allowed. You have to provide a JSON entity : {"accountId": long, "amount": int}
+
+    - POST /loan		Credit account, give a response and/or create an approval request.
+
+To run the service locally : 
+
+    $ mvn {tomcat|jetty}:run 
 
 ##Loan Approval client :
 

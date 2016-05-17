@@ -32,6 +32,11 @@
 		    <groupId>org.glassfish.jersey.media</groupId>
 		    <artifactId>jersey-media-moxy</artifactId>
 		</dependency>
+		<!-- bean validation -->
+		<dependency>
+		    <groupId>org.glassfish.jersey.ext</groupId>
+		    <artifactId>jersey-bean-validation</artifactId>
+		</dependency>
 
 		
 		<!-- Unit tests -->
